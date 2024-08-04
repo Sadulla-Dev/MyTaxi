@@ -56,4 +56,17 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    implementation(libs.maps.compose)
+
+    // Pick your versions of Android Mapbox Map SDK
+    // Note that Compose extension is compatible with Maps SDK v11.0+.
+    implementation(libs.mapbox)
+
+    // Handling Permission scenario
+    implementation(libs.permission.flow.compose)
+
+    // libs for fetching user current location and handling this Task API
+    implementation(libs.kotlinx.coroutines.play.services)
+    implementation(libs.play.services.location)
 }

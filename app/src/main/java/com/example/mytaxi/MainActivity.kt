@@ -1,3 +1,5 @@
+@file:OptIn(MapboxExperimental::class)
+
 package com.example.mytaxi
 
 import android.os.Bundle
@@ -5,13 +7,14 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.mytaxi.ui.theme.MyTaxiTheme
 import com.example.mytaxi.ui.theme.ThemedPreview
+import com.mapbox.geojson.Point
+import com.mapbox.maps.MapboxExperimental
+import com.mapbox.maps.extension.compose.MapboxMap
+import com.mapbox.maps.extension.compose.animation.viewport.MapViewportState
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,22 +22,24 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MyTaxiTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                MapboxMapScreen()
             }
         }
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
+fun MapboxMapScreen() {
+    MapboxMap(
+        Modifier.fillMaxSize(),
+        mapViewportState = MapViewportState().apply {
+            setCameraOptions {
+                zoom(2.0)
+                center(Point.fromLngLat(-98.0, 39.5))
+                pitch(0.0)
+                bearing(0.0)
+            }
+        },
     )
 }
 
@@ -42,6 +47,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Composable
 fun GreetingPreview() {
     MyTaxiTheme {
-        Greeting("Android")
+        MapboxMapScreen()
     }
 }
