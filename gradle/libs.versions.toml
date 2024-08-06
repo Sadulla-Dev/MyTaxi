@@ -1,4 +1,5 @@
 [versions]
+accompanistPermissions = "0.34.0"
 agp = "8.7.0-alpha03"
 kotlin = "2.0.0"
 coreKtx = "1.13.1"
@@ -13,8 +14,11 @@ mapsCompose = "0.1.0"
 permissionFlowCompose = "1.2.0"
 playServicesLocation = "21.3.0"
 kotlinxCoroutinesPlayServices = "1.8.1"
+playServicesMaps = "19.0.0"
+accompanist = "0.35.1-alpha"
 
 [libraries]
+accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -34,6 +38,8 @@ maps-compose = { module = "com.mapbox.extension:maps-compose", version.ref = "ma
 permission-flow-compose = { module = "dev.shreyaspatil.permission-flow:permission-flow-compose", version.ref = "permissionFlowCompose" }
 play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
 mapbox = { module = "com.mapbox.maps:android", version.ref = "mapbox" }
+play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }
+accompanist_systemui = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

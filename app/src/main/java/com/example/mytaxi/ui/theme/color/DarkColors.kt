@@ -1,11 +1,13 @@
 package com.example.mytaxi.ui.theme.color
 
-import androidx.compose.material3.darkColorScheme
+import androidx.compose.ui.graphics.Color
 
-val DarkColors = darkColorScheme(
-    primary = Blue,
-    onPrimary = White,
-    primaryContainer = Blue,
-    onPrimaryContainer = White,
-    inversePrimary = Blue,
+fun darkColors() = MyTaxiThemeColors(
+    background = White,
+    onBackground = Dark,
+    backgroundPrimary = Dark,
+    secondary = Color.Green,
+    buttonPrimary = LightGreen,
+    iconPrimary = Gray,
+    tabSelected = Red
 )
