@@ -71,7 +71,7 @@ fun MapScreen(content: @Composable (MapView, PointAnnotationManager?) -> Unit) {
             scope.launch {
                 val currentLocation = getCurrentLocation(context)
                 currentLocation?.let {
-                    mapView?.getMapboxMap()?.setCamera(
+                    mapView.getMapboxMap().setCamera(
                         CameraOptions.Builder()
                             .center(Point.fromLngLat(it.longitude, it.latitude))
                             .zoom(15.0)
