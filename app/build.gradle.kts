@@ -58,14 +58,12 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation(libs.maps.compose)
-
     implementation(libs.mapbox)
 
-    implementation(libs.permission.flow.compose)
     implementation(libs.accompanist.systemui)
 
     implementation(libs.kotlinx.coroutines.play.services)
     implementation(libs.play.services.location)
     implementation (libs.accompanist.permissions)
+    implementation(libs.flexible.bottomsheet)
 }

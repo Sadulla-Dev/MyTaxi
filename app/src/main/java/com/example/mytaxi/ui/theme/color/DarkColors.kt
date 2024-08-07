@@ -6,6 +6,6 @@ fun darkColors() = MyTaxiThemeColors(
     backgroundPrimary = DarkGray,
     secondary = Green,
     buttonPrimary = LightGreen,
-    iconPrimary = Gray,
+    iconPrimary = SecondaryGray,
     tabSelected = Red
 )

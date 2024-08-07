@@ -52,10 +52,10 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
 @Composable
-fun MapScreen(content: @Composable (MapView?, PointAnnotationManager?) -> Unit) {
+fun MapScreen(content: @Composable (MapView, PointAnnotationManager?) -> Unit) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    var mapView by remember { mutableStateOf<MapView?>(null) }
+    var mapView by remember { mutableStateOf<MapView>(MapView(context)) }
     var pointAnnotationManager by remember { mutableStateOf<PointAnnotationManager?>(null) }
     val permissionState = rememberPermissionState(Manifest.permission.ACCESS_FINE_LOCATION)
 
@@ -135,15 +135,15 @@ fun zoomOut(mapView: MapView?) {
 }
 
 fun showUserLocation(
-    context: Context,
-    mapView: MapView?,
+//    context: Context,
+    mapView: MapView,
     pointAnnotationManager: PointAnnotationManager?
 ) {
     val scope = CoroutineScope(Dispatchers.Main)
     scope.launch {
-        val currentLocation = getCurrentLocation(context)
+        val currentLocation = getCurrentLocation(mapView.context)
         currentLocation?.let {
-            mapView?.getMapboxMap()?.flyTo(
+            mapView.getMapboxMap().flyTo(
                 CameraOptions.Builder()
                     .center(Point.fromLngLat(it.longitude, it.latitude))
                     .zoom(15.0)
@@ -152,7 +152,7 @@ fun showUserLocation(
                     duration(500L)
                 }
             )
-            addMarkerToMap(context, pointAnnotationManager, it)
+            addMarkerToMap(mapView.context, pointAnnotationManager, it)
         }
     }
 }
