@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalPermissionsApi::class)
 
-package com.example.mytaxi
+package com.example.mytaxi.components
 
 import android.Manifest
 import android.content.Context
@@ -9,6 +9,7 @@ import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.location.Location
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -21,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.res.ResourcesCompat
+import com.example.mytaxi.R
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
@@ -33,6 +35,8 @@ import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.MapInitOptions
 import com.mapbox.maps.MapView
 import com.mapbox.maps.Style
+import com.mapbox.maps.plugin.animation.MapAnimationOptions
+import com.mapbox.maps.plugin.animation.flyTo
 import com.mapbox.maps.plugin.annotation.annotations
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
@@ -41,12 +45,14 @@ import com.mapbox.maps.plugin.attribution.attribution
 import com.mapbox.maps.plugin.compass.compass
 import com.mapbox.maps.plugin.logo.logo
 import com.mapbox.maps.plugin.scalebar.scalebar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
 @Composable
-fun MapboxMapScreen() {
+fun MapScreen(content: @Composable (MapView?, PointAnnotationManager?) -> Unit) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     var mapView by remember { mutableStateOf<MapView?>(null) }
@@ -79,28 +85,76 @@ fun MapboxMapScreen() {
         }
     }
 
-    AndroidView(
-        factory = { ctx ->
-            MapView(ctx, mapInitOptions = MapInitOptions(ctx)).apply {
-                mapView = this
-                getMapboxMap().apply {
-                    loadStyle(mapStyle)
-                    setCamera(
-                        CameraOptions.Builder()
-                            .center(Point.fromLngLat(69.334525, 41.338543))
-                            .zoom(15.0)
-                            .build()
-                    )
+    Box(modifier = Modifier.fillMaxSize()) {
+        AndroidView(
+            factory = { ctx ->
+                MapView(ctx, mapInitOptions = MapInitOptions(ctx)).apply {
+                    mapView = this
+                    getMapboxMap().apply {
+                        loadStyle(mapStyle)
+                        setCamera(
+                            CameraOptions.Builder()
+                                .center(Point.fromLngLat(69.334525, 41.338543))
+                                .zoom(15.0)
+                                .build()
+                        )
+                    }
+                    pointAnnotationManager = annotations.createPointAnnotationManager()
+                    scalebar.enabled = false
+                    compass.enabled = false
+                    logo.enabled = false
+                    attribution.enabled = false
                 }
-                pointAnnotationManager = annotations.createPointAnnotationManager()
-                scalebar.enabled = false
-                compass.enabled = false
-                logo.enabled = false
-                attribution.enabled = false
-            }
-        },
-        modifier = Modifier.fillMaxSize()
+            },
+            modifier = Modifier.fillMaxSize()
+        )
+        content(mapView, pointAnnotationManager)
+    }
+}
+
+fun zoomIn(mapView: MapView?) {
+    mapView?.getMapboxMap()?.flyTo(
+        CameraOptions.Builder()
+            .zoom(mapView.getMapboxMap().cameraState.zoom + 1.0)
+            .build(),
+        MapAnimationOptions.mapAnimationOptions {
+            duration(500L)
+        }
     )
+}
+
+fun zoomOut(mapView: MapView?) {
+    mapView?.getMapboxMap()?.flyTo(
+        CameraOptions.Builder()
+            .zoom(mapView.getMapboxMap().cameraState.zoom - 1.0)
+            .build(),
+        MapAnimationOptions.mapAnimationOptions {
+            duration(500L)
+        }
+    )
+}
+
+fun showUserLocation(
+    context: Context,
+    mapView: MapView?,
+    pointAnnotationManager: PointAnnotationManager?
+) {
+    val scope = CoroutineScope(Dispatchers.Main)
+    scope.launch {
+        val currentLocation = getCurrentLocation(context)
+        currentLocation?.let {
+            mapView?.getMapboxMap()?.flyTo(
+                CameraOptions.Builder()
+                    .center(Point.fromLngLat(it.longitude, it.latitude))
+                    .zoom(15.0)
+                    .build(),
+                MapAnimationOptions.mapAnimationOptions {
+                    duration(500L)
+                }
+            )
+            addMarkerToMap(context, pointAnnotationManager, it)
+        }
+    }
 }
 
 fun addMarkerToMap(

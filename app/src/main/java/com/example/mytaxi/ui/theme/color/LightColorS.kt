@@ -3,7 +3,7 @@ package com.example.mytaxi.ui.theme.color
 fun lightColors() = MyTaxiThemeColors(
     background = Dark,
     onBackground = White,
-    backgroundPrimary = Gray,
+    backgroundPrimary = LightGray,
     secondary = LightGray,
     buttonPrimary = Green,
     iconPrimary = Gray,

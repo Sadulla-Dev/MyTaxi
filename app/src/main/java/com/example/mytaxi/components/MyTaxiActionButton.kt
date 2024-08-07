@@ -30,8 +30,8 @@ fun MainIconButton(
     modifier: Modifier = Modifier,
     icon: Int? = null,
     text: String? = null,
-    backgroundColor: Color = MyTaxiColors.background,
-    secondBackgroundColor: Color = MyTaxiColors.background,
+    backgroundColor: Color = MyTaxiColors.onBackground,
+    secondBackgroundColor: Color = Color.Transparent,
     iconTint: Color = MyTaxiColors.iconPrimary,
     onClick: () -> Unit,
 ) {
@@ -90,7 +90,6 @@ private fun MainIconButtonPreview() = MyTaxiTheme {
             icon = R.drawable.ic_chevrons,
             onClick = {},
             modifier = Modifier.padding(16.dp),
-            secondBackgroundColor = MyTaxiColors.backgroundPrimary
         )
     }
 }
