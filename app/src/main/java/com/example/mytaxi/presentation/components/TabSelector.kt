@@ -45,17 +45,18 @@ fun TabSelector(
             .fillMaxSize()
             .background(MyTaxiColors.onBackground)
     ) {
-        val segmentWidth = maxWidth / tabs.size
-        val boxWidth = segmentWidth - 8.dp
-        val positions = tabs.indices.map { index ->
-            segmentWidth * index + (segmentWidth - boxWidth) / 2
+        val segmentWidth = remember { maxWidth / tabs.size }
+        val boxWidth = remember { segmentWidth - 8.dp }
+        val positions = remember {
+            tabs.indices.map { index ->
+                segmentWidth * index + (segmentWidth - boxWidth) / 2
+            }
         }
         val animatedOffsetX by animateDpAsState(
             targetValue = positions[selectedOption],
             label = ""
         )
-        val containerHeight = maxHeight
-        val verticalOffset = (containerHeight - 48.dp) / 2
+        val verticalOffset = remember { (maxHeight - 48.dp) / 2 }
 
         Row(
             modifier = Modifier.fillMaxHeight(),
