@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,6 +26,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.mytaxi.R
 import com.example.mytaxi.presentation.theme.MyTaxiColors
+import com.example.mytaxi.presentation.theme.MyTaxiCornerRadius
 import com.example.mytaxi.presentation.theme.MyTaxiTheme
 import com.example.mytaxi.presentation.theme.MyTaxiTypography
 import com.example.mytaxi.presentation.theme.ThemedPreview
@@ -56,7 +56,7 @@ fun MainIconButton(
 
     Box(modifier = modifier
         .size(56.dp)
-        .clip(RoundedCornerShape(14.dp))
+        .clip(MyTaxiCornerRadius.large)
         .offset(x = animatedOffset)
         .background(backgroundColor)
         .applyIf(
@@ -87,7 +87,7 @@ fun MainIconButton(
             modifier = Modifier
                 .padding(4.dp)
                 .fillMaxSize()
-                .clip(RoundedCornerShape(10.dp))
+                .clip(MyTaxiCornerRadius.small)
                 .background(innerBackgroundColor), contentAlignment = Alignment.Center
         ) {
             if (icon != null) {

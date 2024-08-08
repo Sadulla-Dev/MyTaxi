@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,9 +24,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.example.mytaxi.presentation.theme.MyTaxiColors
+import com.example.mytaxi.presentation.theme.MyTaxiCornerRadius
 import com.example.mytaxi.presentation.theme.MyTaxiTheme
 import com.example.mytaxi.presentation.theme.MyTaxiTypography
 import com.example.mytaxi.presentation.theme.ThemedPreview
+import com.example.mytaxi.presentation.theme.color.Black
 
 @Composable
 fun TabSelector(
@@ -39,7 +40,7 @@ fun TabSelector(
 
     BoxWithConstraints(
         modifier = modifier
-            .clip(RoundedCornerShape(14.dp))
+            .clip(MyTaxiCornerRadius.large)
             .height(56.dp)
             .fillMaxSize()
             .background(MyTaxiColors.onBackground)
@@ -76,7 +77,7 @@ fun TabSelector(
                     Text(
                         text = text,
                         color = MyTaxiColors.background,
-                        style = MyTaxiTypography.titleRegular
+                        style = MyTaxiTypography.titleThin
                     )
                 }
             }
@@ -91,7 +92,7 @@ fun TabSelector(
         Box(
             modifier = Modifier
                 .offset(x = animatedOffsetX, y = verticalOffset)
-                .clip(RoundedCornerShape(10.dp))
+                .clip(MyTaxiCornerRadius.small)
                 .width(boxWidth)
                 .height(48.dp)
                 .background(selectedBackgroundColor)
@@ -99,8 +100,8 @@ fun TabSelector(
             Text(
                 text = tabs[selectedOption],
                 modifier = Modifier.align(Alignment.Center),
-                color = MyTaxiColors.onBackground,
-                style = MyTaxiTypography.titleThin
+                color = Black,
+                style = MyTaxiTypography.titleRegular
             )
         }
     }

@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalPermissionsApi::class)
+@file:OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class)
 
 package com.example.mytaxi.presentation.main
 
@@ -21,12 +21,12 @@ import com.example.mytaxi.presentation.components.BottomSheetContent
 import com.example.mytaxi.presentation.components.MapScreen
 import com.example.mytaxi.presentation.components.TopBarActions
 import com.example.mytaxi.presentation.theme.MyTaxiColors
+import com.example.mytaxi.presentation.theme.MyTaxiCornerRadius
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.android.gms.maps.model.LatLng
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
     currentLocation: LatLng,
@@ -34,7 +34,6 @@ fun MainScreen(
 ) {
     val bottomSheetState = rememberBottomSheetScaffoldState()
     val permissionState = rememberPermissionState(Manifest.permission.ACCESS_FINE_LOCATION)
-
 
     LaunchedEffect(permissionState.status) {
         if (permissionState.status.isGranted) {
@@ -59,9 +58,12 @@ fun MainScreen(
         scaffoldState = bottomSheetState,
         sheetContent = { BottomSheetContent() },
         sheetContainerColor = MyTaxiColors.onBackground,
-        sheetPeekHeight = 100.dp,
+        sheetPeekHeight = 105.dp,
         sheetDragHandle = {},
-        sheetShape = RoundedCornerShape(topStart = 18.dp, topEnd = 18.dp)
+        sheetShape = RoundedCornerShape(
+            topStart = MyTaxiCornerRadius.huge,
+            topEnd = MyTaxiCornerRadius.huge
+        )
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             MapScreen(

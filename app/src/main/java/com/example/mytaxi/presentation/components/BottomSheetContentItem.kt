@@ -19,7 +19,7 @@ import com.example.mytaxi.presentation.theme.ThemedPreview
 @Composable
 fun BottomSheetContentItem(bottomSheetItem: BottomSheetItem) {
     Row(
-        modifier = Modifier.padding(16.dp)
+        modifier = Modifier.padding(17.dp)
     ) {
         Icon(
             painter = painterResource(id = bottomSheetItem.icon),

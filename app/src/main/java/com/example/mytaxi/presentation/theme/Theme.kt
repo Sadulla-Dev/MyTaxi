@@ -10,6 +10,7 @@ import androidx.compose.runtime.remember
 import com.example.mytaxi.presentation.theme.color.MyTaxiThemeColors
 import com.example.mytaxi.presentation.theme.color.darkColors
 import com.example.mytaxi.presentation.theme.color.lightColors
+import com.example.mytaxi.presentation.theme.dimension.MyTaxiThemeCornerRadius
 import com.example.mytaxi.presentation.theme.typography.MyTaxiThemeTypography
 
 val MyTaxiColors
@@ -19,6 +20,11 @@ val MyTaxiColors
 val MyTaxiTypography
     @Composable
     get() = MyTaxiTheme.typography
+
+
+val MyTaxiCornerRadius
+    @Composable
+    get() = MyTaxiTheme.corners
 
 private object MyTaxiTheme {
     val colors: MyTaxiThemeColors
@@ -30,15 +36,23 @@ private object MyTaxiTheme {
         @Composable
         @ReadOnlyComposable
         get() = LocalTypography.current
+
+    val corners: MyTaxiThemeCornerRadius
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalCorners.current
 }
 
 val LocalColors = compositionLocalOf { lightColors() }
+
+val LocalCorners = compositionLocalOf { MyTaxiThemeCornerRadius() }
 
 val LocalTypography = compositionLocalOf { MyTaxiThemeTypography() }
 
 @Composable
 fun MyTaxiTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
+    corners: MyTaxiThemeCornerRadius = MyTaxiTheme.corners,
     typography: MyTaxiThemeTypography = MyTaxiTheme.typography,
     content: @Composable () -> Unit
 ) {
@@ -51,6 +65,7 @@ fun MyTaxiTheme(
     CompositionLocalProvider(
         LocalColors provides rememberedColors,
         LocalTypography provides typography,
+        LocalCorners provides corners,
     ) {
         MaterialTheme {
             content()

@@ -8,9 +8,10 @@ import com.example.mytaxi.presentation.intent.MainScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,13 +28,11 @@ class MainViewModel @Inject constructor(
     }
 
     private fun fetchLocation() {
-        viewModelScope.launch {
-            locationRepository.getCurrentLocation().onStart {
-                _state.update { it.copy(isLoading = true) }
-            }.collect { location ->
-                _state.update { it.copy(currentLocation = location, isLoading = false) }
-                locationRepository.saveLocation(location)
-            }
-        }
+        locationRepository.getCurrentLocation().onStart {
+            _state.update { it.copy(isLoading = true) }
+        }.onEach { location ->
+            _state.update { it.copy(currentLocation = location, isLoading = false) }
+            locationRepository.saveLocation(location)
+        }.launchIn(viewModelScope)
     }
 }

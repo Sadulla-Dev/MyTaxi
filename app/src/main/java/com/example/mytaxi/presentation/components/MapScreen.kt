@@ -64,8 +64,8 @@ fun MapScreen(
 
     Box(modifier = Modifier.fillMaxSize()) {
         AndroidView(
-            factory = { ctx ->
-                MapView(ctx, mapInitOptions = MapInitOptions(ctx)).apply {
+            factory = { context ->
+                MapView(context, mapInitOptions = MapInitOptions(context)).apply {
                     mapView = this
                     getMapboxMap().apply {
                         loadStyle(mapStyle)

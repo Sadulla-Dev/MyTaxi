@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -16,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.example.mytaxi.R
 import com.example.mytaxi.presentation.components.model.BottomSheetItem
 import com.example.mytaxi.presentation.theme.MyTaxiColors
+import com.example.mytaxi.presentation.theme.MyTaxiCornerRadius
 import com.example.mytaxi.presentation.theme.MyTaxiTheme
 import com.example.mytaxi.presentation.theme.ThemedPreview
 
@@ -45,7 +45,7 @@ fun BottomSheetContent() {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 12.dp, vertical = 16.dp)
-            .clip(RoundedCornerShape(12.dp))
+            .clip(MyTaxiCornerRadius.medium)
             .background(MyTaxiColors.backgroundPrimary)
     ) {
         LazyColumn {

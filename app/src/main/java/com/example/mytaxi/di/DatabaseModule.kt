@@ -3,7 +3,7 @@ package com.example.mytaxi.di
 import android.app.Application
 import android.content.Context
 import androidx.room.Room
-import com.example.mytaxi.data.dao.AppDatabase
+import com.example.mytaxi.data.local.AppDatabase
 import com.example.mytaxi.data.dao.LocationDao
 import dagger.Module
 import dagger.Provides

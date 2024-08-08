@@ -10,5 +10,5 @@ fun darkColors() = MyTaxiThemeColors(
     tabSelected = Red,
     textPrimary = Black,
     iconAccent = Blue,
-    textSecondary = SecondaryAccent,
+    textSecondary = SecondaryGray,
 )
