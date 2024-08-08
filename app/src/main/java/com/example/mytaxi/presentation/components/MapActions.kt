@@ -14,12 +14,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.mytaxi.R
 import com.example.mytaxi.presentation.theme.MyTaxiColors
 import com.example.mytaxi.presentation.theme.MyTaxiTheme
 import com.example.mytaxi.presentation.theme.ThemedPreview
-import com.example.mytaxi.presentation.theme.color.Blue
 import kotlinx.coroutines.delay
 
 @Composable
@@ -27,7 +27,8 @@ fun MapActions(
     modifier: Modifier = Modifier,
     onPlusClick: () -> Unit,
     onMinusClick: () -> Unit,
-    onLocationClick: () -> Unit
+    onLocationClick: () -> Unit,
+    slideOffset: Dp = 0.dp
 ) {
     var isZoomingIn by remember { mutableStateOf(false) }
     var isZoomingOut by remember { mutableStateOf(false) }
@@ -41,6 +42,7 @@ fun MapActions(
         Column(modifier = Modifier.align(Alignment.CenterEnd)) {
             MainIconButton(
                 icon = R.drawable.ic_plus,
+                slideOffset = slideOffset,
                 onClick = onPlusClick,
                 onLongPress = { isZoomingIn = true },
                 onLongPressEnd = { isZoomingIn = false },
@@ -49,6 +51,7 @@ fun MapActions(
             MainIconButton(
                 icon = R.drawable.ic_minus,
                 onClick = onMinusClick,
+                slideOffset = slideOffset,
                 onLongPress = { isZoomingOut = true },
                 onLongPressEnd = { isZoomingOut = false },
                 backgroundColor = MyTaxiColors.onBackground.copy(alpha = 0.9f),
@@ -57,7 +60,8 @@ fun MapActions(
             MainIconButton(
                 icon = R.drawable.ic_location,
                 onClick = onLocationClick,
-                iconTint = Blue,
+                slideOffset = slideOffset,
+                iconTint = MyTaxiColors.iconAccent,
                 backgroundColor = MyTaxiColors.onBackground.copy(alpha = 0.9f),
             )
         }
@@ -65,7 +69,8 @@ fun MapActions(
         MainIconButton(
             icon = R.drawable.ic_chevrons,
             onClick = {},
-            secondBackgroundColor = MyTaxiColors.backgroundPrimary,
+            slideOffset = -slideOffset,
+            innerBackgroundColor = MyTaxiColors.backgroundPrimary,
             backgroundColor = MyTaxiColors.onBackground.copy(alpha = 0.9f),
         )
     }

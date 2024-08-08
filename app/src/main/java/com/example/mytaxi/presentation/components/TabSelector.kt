@@ -7,7 +7,9 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -17,17 +19,15 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.mytaxi.presentation.theme.MyTaxiColors
+import com.example.mytaxi.presentation.theme.MyTaxiTheme
+import com.example.mytaxi.presentation.theme.MyTaxiTypography
+import com.example.mytaxi.presentation.theme.ThemedPreview
 
 @Composable
 fun TabSelector(
@@ -35,20 +35,7 @@ fun TabSelector(
     selectedOption: Int = 0,
     onTabSelected: (selectedIndex: Int) -> Unit = {}
 ) {
-
     val tabs = remember { listOf("Band", "Faol") }
-    val textStyle = TextStyle(
-        color = MyTaxiColors.background,
-        textAlign = TextAlign.Center,
-        fontWeight = FontWeight.Medium,
-        fontSize = 12.sp
-    )
-    val selectedTabTextStyle = TextStyle(
-        color = MyTaxiColors.onBackground,
-        textAlign = TextAlign.Center,
-        fontWeight = FontWeight.Bold,
-        fontSize = 12.sp
-    )
 
     BoxWithConstraints(
         modifier = modifier
@@ -62,7 +49,10 @@ fun TabSelector(
         val positions = tabs.indices.map { index ->
             segmentWidth * index + (segmentWidth - boxWidth) / 2
         }
-        val animatedOffsetX by animateDpAsState(targetValue = positions[selectedOption], label = "")
+        val animatedOffsetX by animateDpAsState(
+            targetValue = positions[selectedOption],
+            label = ""
+        )
         val containerHeight = maxHeight
         val verticalOffset = (containerHeight - 48.dp) / 2
 
@@ -72,9 +62,7 @@ fun TabSelector(
             verticalAlignment = Alignment.CenterVertically
         ) {
             tabs.forEachIndexed { index, text ->
-                Text(
-                    text = text,
-                    style = textStyle,
+                Box(
                     modifier = Modifier
                         .width(segmentWidth)
                         .clickable(
@@ -82,8 +70,15 @@ fun TabSelector(
                             interactionSource = remember { MutableInteractionSource() }
                         ) {
                             onTabSelected(index)
-                        }
-                )
+                        },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = text,
+                        color = MyTaxiColors.background,
+                        style = MyTaxiTypography.titleRegular
+                    )
+                }
             }
         }
 
@@ -104,8 +99,25 @@ fun TabSelector(
             Text(
                 text = tabs[selectedOption],
                 modifier = Modifier.align(Alignment.Center),
-                style = selectedTabTextStyle
+                color = MyTaxiColors.onBackground,
+                style = MyTaxiTypography.titleThin
             )
         }
+    }
+}
+
+@ThemedPreview
+@Composable
+private fun TabSelectorPreview() = MyTaxiTheme {
+    Column {
+        TabSelector(
+            selectedOption = 0,
+            onTabSelected = {}
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+        TabSelector(
+            selectedOption = 1,
+            onTabSelected = {}
+        )
     }
 }

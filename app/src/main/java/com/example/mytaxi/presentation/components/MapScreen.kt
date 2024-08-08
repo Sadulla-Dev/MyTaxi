@@ -1,5 +1,6 @@
 package com.example.mytaxi.presentation.components
 
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,8 +13,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import com.example.mytaxi.presentation.utils.addMarkerToMap
+import com.example.mytaxi.presentation.theme.MyTaxiTheme
+import com.example.mytaxi.presentation.theme.ThemedPreview
 import com.example.mytaxi.presentation.utils.showUserLocation
 import com.example.mytaxi.presentation.utils.zoomIn
 import com.example.mytaxi.presentation.utils.zoomOut
@@ -32,7 +35,10 @@ import com.mapbox.maps.plugin.logo.logo
 import com.mapbox.maps.plugin.scalebar.scalebar
 
 @Composable
-fun MapScreen(currentLocation: LatLng) {
+fun MapScreen(
+    currentLocation: LatLng,
+    bottomSheetProgress: Float
+) {
     val context = LocalContext.current
 
     var mapView by remember { mutableStateOf(MapView(context)) }
@@ -43,12 +49,16 @@ fun MapScreen(currentLocation: LatLng) {
         Style.LIGHT
     }
 
+    val slideOffset by animateDpAsState(
+        targetValue = 70.dp * bottomSheetProgress,
+        label = ""
+    )
+
     LaunchedEffect(currentLocation) {
-        pointAnnotationManager?.deleteAll()
-        addMarkerToMap(
-            location = currentLocation,
-            context = context,
-            pointAnnotationManager = pointAnnotationManager
+        showUserLocation(
+            mapView = mapView,
+            currentLocation = currentLocation,
+            pointAnnotationManager = pointAnnotationManager,
         )
     }
 
@@ -82,6 +92,7 @@ fun MapScreen(currentLocation: LatLng) {
         )
         MapActions(
             modifier = Modifier.align(Alignment.CenterEnd),
+            slideOffset = slideOffset,
             onPlusClick = { mapView.zoomIn() },
             onMinusClick = { mapView.zoomOut() },
             onLocationClick = {
@@ -90,7 +101,16 @@ fun MapScreen(currentLocation: LatLng) {
                     currentLocation = currentLocation,
                     pointAnnotationManager = pointAnnotationManager,
                 )
-            }
+            },
         )
     }
+}
+
+@ThemedPreview
+@Composable
+private fun MapScreenPreview() = MyTaxiTheme {
+    MapScreen(
+        currentLocation = LatLng(41.311081, 69.240562),
+        bottomSheetProgress = 0f
+    )
 }

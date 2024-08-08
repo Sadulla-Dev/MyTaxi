@@ -27,9 +27,10 @@ class LocationRepositoryImpl @Inject constructor(
 
     private val fusedLocationClient: FusedLocationProviderClient =
         LocationServices.getFusedLocationProviderClient(context)
+
     override fun getCurrentLocation(): Flow<LatLng> = callbackFlow {
         val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 5000)
-            .setMinUpdateIntervalMillis(2000)
+            .setMinUpdateIntervalMillis(10000)
             .build()
 
         val locationCallback = object : LocationCallback() {

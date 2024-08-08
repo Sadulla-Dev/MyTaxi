@@ -7,7 +7,7 @@ import com.example.mytaxi.presentation.intent.MainScreenEvents
 import com.example.mytaxi.presentation.intent.MainScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -18,7 +18,7 @@ class MainViewModel @Inject constructor(
     private val locationRepository: LocationRepository
 ) : ViewModel() {
     private val _state = MutableStateFlow(MainScreenState())
-    val state: StateFlow<MainScreenState> = _state
+    val state = _state.asStateFlow()
 
     fun reduce(intent: MainScreenEvents) {
         when (intent) {
@@ -31,7 +31,7 @@ class MainViewModel @Inject constructor(
             locationRepository.getCurrentLocation().onStart {
                 _state.update { it.copy(isLoading = true) }
             }.collect { location ->
-                _state.update { it.copy(currentLocation = location,isLoading = false) }
+                _state.update { it.copy(currentLocation = location, isLoading = false) }
                 locationRepository.saveLocation(location)
             }
         }

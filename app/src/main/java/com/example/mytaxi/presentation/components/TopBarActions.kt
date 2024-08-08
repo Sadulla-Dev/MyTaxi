@@ -41,7 +41,7 @@ fun TopBarActions(modifier: Modifier = Modifier) {
             onTabSelected = { selectedOption.intValue = it }
         )
         MainIconButton(
-            secondBackgroundColor = MyTaxiColors.buttonPrimary,
+            innerBackgroundColor = MyTaxiColors.buttonPrimary,
             text = "95",
             onClick = {},
             modifier = Modifier.padding(16.dp)

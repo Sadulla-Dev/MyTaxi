@@ -13,11 +13,15 @@ class MyTaxiThemeColors(
     backgroundPrimary: Color,
     secondary: Color,
     buttonPrimary: Color,
+    textPrimary: Color,
+    textSecondary: Color,
     iconPrimary: Color,
+    iconAccent: Color,
     tabSelected: Color,
 ) {
     var background by mutableStateOf(background)
         private set
+
     var onBackground by mutableStateOf(onBackground)
         private set
 
@@ -36,6 +40,15 @@ class MyTaxiThemeColors(
     var tabSelected by mutableStateOf(tabSelected)
         private set
 
+    var textPrimary by mutableStateOf(textPrimary)
+        private set
+
+    var iconAccent by mutableStateOf(iconAccent)
+        private set
+
+    var textSecondary by mutableStateOf(textSecondary)
+        private set
+
     fun copy(
         background: Color = this.background,
         onBackground: Color = this.onBackground,
@@ -44,6 +57,9 @@ class MyTaxiThemeColors(
         backgroundPrimary: Color = this.backgroundPrimary,
         iconPrimary: Color = this.iconPrimary,
         tabSelected: Color = this.tabSelected,
+        textPrimary: Color = this.textPrimary,
+        iconAccent: Color = this.iconAccent,
+        textSecondary: Color = this.textSecondary,
     ) = MyTaxiThemeColors(
         background = background,
         onBackground = onBackground,
@@ -52,6 +68,9 @@ class MyTaxiThemeColors(
         backgroundPrimary = backgroundPrimary,
         iconPrimary = iconPrimary,
         tabSelected = tabSelected,
+        textPrimary = textPrimary,
+        iconAccent = iconAccent,
+        textSecondary = textSecondary,
     )
 
     fun updateColorsFrom(other: MyTaxiThemeColors) {
@@ -62,5 +81,8 @@ class MyTaxiThemeColors(
         buttonPrimary = other.buttonPrimary
         iconPrimary = other.iconPrimary
         tabSelected = other.tabSelected
+        textPrimary = other.textPrimary
+        iconAccent = other.iconAccent
+        textSecondary = other.textSecondary
     }
 }

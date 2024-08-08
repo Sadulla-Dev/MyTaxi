@@ -1,32 +1,36 @@
 package com.example.mytaxi.presentation.components
 
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.mytaxi.R
 import com.example.mytaxi.presentation.theme.MyTaxiColors
 import com.example.mytaxi.presentation.theme.MyTaxiTheme
+import com.example.mytaxi.presentation.theme.MyTaxiTypography
 import com.example.mytaxi.presentation.theme.ThemedPreview
 import com.example.mytaxi.presentation.utils.applyIf
-
 
 @Composable
 fun MainIconButton(
@@ -34,15 +38,26 @@ fun MainIconButton(
     icon: Int? = null,
     text: String? = null,
     backgroundColor: Color = MyTaxiColors.onBackground,
-    secondBackgroundColor: Color = Color.Transparent,
+    innerBackgroundColor: Color = Color.Transparent,
     iconTint: Color = MyTaxiColors.iconPrimary,
     onClick: () -> Unit,
     onLongPress: (() -> Unit)? = null,
-    onLongPressEnd: (() -> Unit)? = null
+    onLongPressEnd: (() -> Unit)? = null,
+    slideOffset: Dp = 0.dp
 ) {
+    val animatedOffset by animateDpAsState(
+        targetValue = slideOffset,
+        animationSpec = tween(
+            durationMillis = 500,
+            easing = LinearOutSlowInEasing
+        ),
+        label = ""
+    )
+
     Box(modifier = modifier
         .size(56.dp)
         .clip(RoundedCornerShape(14.dp))
+        .offset(x = animatedOffset)
         .background(backgroundColor)
         .applyIf(
             condition = onLongPress == null,
@@ -73,7 +88,7 @@ fun MainIconButton(
                 .padding(4.dp)
                 .fillMaxSize()
                 .clip(RoundedCornerShape(10.dp))
-                .background(secondBackgroundColor), contentAlignment = Alignment.Center
+                .background(innerBackgroundColor), contentAlignment = Alignment.Center
         ) {
             if (icon != null) {
                 Icon(
@@ -86,9 +101,8 @@ fun MainIconButton(
             if (text != null) {
                 Text(
                     text = text,
-                    fontSize = 20.sp,
-                    color = Color.Black,
-                    style = MaterialTheme.typography.bodyMedium
+                    color = MyTaxiColors.textPrimary,
+                    style = MyTaxiTypography.titleBold
                 )
             }
         }
@@ -100,7 +114,7 @@ fun MainIconButton(
 private fun MainIconButtonPreview() = MyTaxiTheme {
     Column(modifier = Modifier.background(MyTaxiColors.background)) {
         MainIconButton(
-            secondBackgroundColor = MyTaxiColors.buttonPrimary,
+            innerBackgroundColor = MyTaxiColors.buttonPrimary,
             text = "95",
             onClick = {},
             modifier = Modifier.padding(16.dp)
