@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
+import com.example.mytaxi.presentation.utils.addMarkerToMap
 import com.example.mytaxi.presentation.utils.showUserLocation
 import com.example.mytaxi.presentation.utils.zoomIn
 import com.example.mytaxi.presentation.utils.zoomOut
@@ -31,7 +32,7 @@ import com.mapbox.maps.plugin.logo.logo
 import com.mapbox.maps.plugin.scalebar.scalebar
 
 @Composable
-fun MapScreen(currentLocation: LatLng?) {
+fun MapScreen(currentLocation: LatLng) {
     val context = LocalContext.current
 
     var mapView by remember { mutableStateOf(MapView(context)) }
@@ -42,12 +43,12 @@ fun MapScreen(currentLocation: LatLng?) {
         Style.LIGHT
     }
 
-
     LaunchedEffect(currentLocation) {
-        showUserLocation(
-            mapView = mapView,
-            currentLocation = currentLocation,
-            pointAnnotationManager = pointAnnotationManager,
+        pointAnnotationManager?.deleteAll()
+        addMarkerToMap(
+            location = currentLocation,
+            context = context,
+            pointAnnotationManager = pointAnnotationManager
         )
     }
 
@@ -62,8 +63,8 @@ fun MapScreen(currentLocation: LatLng?) {
                             CameraOptions.Builder()
                                 .center(
                                     Point.fromLngLat(
-                                        currentLocation?.longitude ?: 69.334525,
-                                        currentLocation?.latitude ?: 41.338543
+                                        currentLocation.longitude,
+                                        currentLocation.latitude
                                     )
                                 )
                                 .zoom(15.0)

@@ -59,6 +59,9 @@ fun MainIconButton(
                             awaitRelease()
                             onLongPressEnd?.invoke()
                         },
+                        onTap = {
+                            onClick()
+                        }
                     )
                 }
             }

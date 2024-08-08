@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -17,6 +19,8 @@ import com.example.mytaxi.presentation.theme.ThemedPreview
 
 @Composable
 fun TopBarActions(modifier: Modifier = Modifier) {
+    val selectedOption = remember { mutableIntStateOf(0) }
+
     Row(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
@@ -29,9 +33,12 @@ fun TopBarActions(modifier: Modifier = Modifier) {
             onClick = {},
             modifier = Modifier.padding(horizontal = 16.dp)
         )
+
+
         TabSelector(
-            onSelectionChanged = {},
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
+            selectedOption = selectedOption.intValue,
+            onTabSelected = { selectedOption.intValue = it }
         )
         MainIconButton(
             secondBackgroundColor = MyTaxiColors.buttonPrimary,

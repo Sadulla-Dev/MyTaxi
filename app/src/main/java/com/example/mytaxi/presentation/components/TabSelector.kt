@@ -1,99 +1,111 @@
 package com.example.mytaxi.presentation.components
 
-import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.mytaxi.presentation.theme.MyTaxiColors
 
 @Composable
 fun TabSelector(
-    onSelectionChanged: (Int) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    var selectedIndex by remember { mutableIntStateOf(0) }
-
-    Row(
-        modifier = modifier
-            .wrapContentSize()
-            .height(56.dp)
-            .clip(RoundedCornerShape(14.dp))
-            .background(MyTaxiColors.onBackground)
-            .padding(4.dp)
-    ) {
-        TabSelectorItem(
-            text = "Band",
-            selected = selectedIndex == 0,
-            onClick = {
-                selectedIndex = 0
-                onSelectionChanged(0)
-            },
-            modifier = Modifier.weight(1f),
-            selectedColor = MyTaxiColors.tabSelected
-        )
-        TabSelectorItem(
-            text = "Faol",
-            selected = selectedIndex == 1,
-            onClick = {
-                selectedIndex = 1
-                onSelectionChanged(1)
-            },
-            modifier = Modifier.weight(1f),
-            selectedColor = MyTaxiColors.buttonPrimary
-        )
-    }
-}
-
-@Composable
-private fun TabSelectorItem(
-    text: String,
-    selected: Boolean,
-    onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    selectedColor: Color
+    selectedOption: Int = 0,
+    onTabSelected: (selectedIndex: Int) -> Unit = {}
 ) {
-    val backgroundColor by animateColorAsState(
-        targetValue = if (selected) selectedColor else MyTaxiColors.onBackground,
-        label = ""
+
+    val tabs = remember { listOf("Band", "Faol") }
+    val textStyle = TextStyle(
+        color = MyTaxiColors.background,
+        textAlign = TextAlign.Center,
+        fontWeight = FontWeight.Medium,
+        fontSize = 12.sp
     )
-    val textColor by animateColorAsState(
-        targetValue = if (selected)
-            MyTaxiColors.onBackground
-        else MyTaxiColors.background,
-        label = ""
+    val selectedTabTextStyle = TextStyle(
+        color = MyTaxiColors.onBackground,
+        textAlign = TextAlign.Center,
+        fontWeight = FontWeight.Bold,
+        fontSize = 12.sp
     )
 
-    Box(
+    BoxWithConstraints(
         modifier = modifier
-            .fillMaxHeight()
-            .clip(RoundedCornerShape(10.dp))
-            .background(backgroundColor)
-            .clickable(onClick = onClick)
-            .padding(10.dp),
-        contentAlignment = Alignment.Center
+            .clip(RoundedCornerShape(14.dp))
+            .height(56.dp)
+            .fillMaxSize()
+            .background(MyTaxiColors.onBackground)
     ) {
-        Text(
-            text = text,
-            color = textColor,
-            style = MaterialTheme.typography.labelLarge
-        )
+        val segmentWidth = maxWidth / tabs.size
+        val boxWidth = segmentWidth - 8.dp
+        val positions = tabs.indices.map { index ->
+            segmentWidth * index + (segmentWidth - boxWidth) / 2
+        }
+        val animatedOffsetX by animateDpAsState(targetValue = positions[selectedOption], label = "")
+        val containerHeight = maxHeight
+        val verticalOffset = (containerHeight - 48.dp) / 2
+
+        Row(
+            modifier = Modifier.fillMaxHeight(),
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            tabs.forEachIndexed { index, text ->
+                Text(
+                    text = text,
+                    style = textStyle,
+                    modifier = Modifier
+                        .width(segmentWidth)
+                        .clickable(
+                            indication = null,
+                            interactionSource = remember { MutableInteractionSource() }
+                        ) {
+                            onTabSelected(index)
+                        }
+                )
+            }
+        }
+
+        val selectedBackgroundColor = if (selectedOption == 0) {
+            MyTaxiColors.tabSelected
+        } else {
+            MyTaxiColors.buttonPrimary
+        }
+
+        Box(
+            modifier = Modifier
+                .offset(x = animatedOffsetX, y = verticalOffset)
+                .clip(RoundedCornerShape(10.dp))
+                .width(boxWidth)
+                .height(48.dp)
+                .background(selectedBackgroundColor)
+        ) {
+            Text(
+                text = tabs[selectedOption],
+                modifier = Modifier.align(Alignment.Center),
+                style = selectedTabTextStyle
+            )
+        }
     }
 }

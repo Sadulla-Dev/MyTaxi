@@ -11,22 +11,21 @@ import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager
 fun showUserLocation(
     mapView: MapView,
     pointAnnotationManager: PointAnnotationManager?,
-    currentLocation: LatLng?
+    currentLocation: LatLng
 ) {
-    currentLocation?.let { location ->
-        mapView.getMapboxMap().flyTo(
-            CameraOptions.Builder()
-                .center(Point.fromLngLat(location.longitude, location.latitude))
-                .zoom(15.0)
-                .build(),
-            MapAnimationOptions.mapAnimationOptions {
-                duration(500L)
-            }
-        )
-        addMarkerToMap(
-            location = location,
-            context = mapView.context,
-            pointAnnotationManager = pointAnnotationManager,
-        )
-    }
+    mapView.getMapboxMap().flyTo(
+        CameraOptions.Builder()
+            .center(Point.fromLngLat(currentLocation.longitude, currentLocation.latitude))
+            .zoom(15.0)
+            .build(),
+        MapAnimationOptions.mapAnimationOptions {
+            duration(500L)
+        })
+
+    pointAnnotationManager?.deleteAll()
+    addMarkerToMap(
+        location = currentLocation,
+        context = mapView.context,
+        pointAnnotationManager = pointAnnotationManager,
+    )
 }
