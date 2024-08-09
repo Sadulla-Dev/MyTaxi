@@ -33,7 +33,7 @@ class LocationRepositoryImpl @Inject constructor(
     override fun getCurrentLocation(): Flow<LatLng> = callbackFlow {
         val locationRequest = LocationRequest
             .Builder(Priority.PRIORITY_HIGH_ACCURACY, 5000)
-            .setMinUpdateIntervalMillis(10000)
+            .setMinUpdateIntervalMillis(5000)
             .build()
 
         val locationCallback = object : LocationCallback() {
