@@ -16,7 +16,6 @@ import androidx.compose.ui.unit.dp
 import com.example.mytaxi.presentation.theme.MyTaxiColors
 import com.example.mytaxi.presentation.theme.MyTaxiCornerRadius
 
-
 @Composable
 fun SheetDragHandle() {
     Column {

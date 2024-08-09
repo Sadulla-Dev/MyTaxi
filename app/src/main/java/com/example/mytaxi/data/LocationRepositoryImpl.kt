@@ -26,12 +26,13 @@ class LocationRepositoryImpl @Inject constructor(
     private val context: Context,
 ) : LocationRepository {
 
-    private val fusedLocationClient: FusedLocationProviderClient =
-        LocationServices.getFusedLocationProviderClient(context)
+    private val fusedLocationClient: FusedLocationProviderClient
+        get() = LocationServices.getFusedLocationProviderClient(context)
 
     @SuppressLint("MissingPermission")
     override fun getCurrentLocation(): Flow<LatLng> = callbackFlow {
-        val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 5000)
+        val locationRequest = LocationRequest
+            .Builder(Priority.PRIORITY_HIGH_ACCURACY, 5000)
             .setMinUpdateIntervalMillis(10000)
             .build()
 
@@ -39,7 +40,9 @@ class LocationRepositoryImpl @Inject constructor(
             override fun onLocationResult(locationResult: LocationResult) {
                 val location = locationResult.lastLocation
 
-                val latLng = location?.let { LatLng(it.latitude, it.longitude) } ?: LatLng(0.0, 0.0)
+                val latLng = location?.let {
+                    LatLng(it.latitude, it.longitude)
+                } ?: throw Exception("Couldn't get location")
                 trySend(latLng).isSuccess
             }
         }

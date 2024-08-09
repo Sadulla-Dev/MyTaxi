@@ -28,11 +28,17 @@ class MainViewModel @Inject constructor(
     }
 
     private fun fetchLocation() {
-        locationRepository.getCurrentLocation().onStart {
-            _state.update { it.copy(isLoading = true) }
-        }.onEach { location ->
-            _state.update { it.copy(currentLocation = location, isLoading = false) }
-            locationRepository.saveLocation(location)
-        }.launchIn(viewModelScope)
+        locationRepository.getCurrentLocation()
+            .onStart {
+                _state.update { it.copy(isLoading = true) }
+            }.onEach { location ->
+                _state.update {
+                    it.copy(
+                        currentLocation = location,
+                        isLoading = false
+                    )
+                }
+                locationRepository.saveLocation(location)
+            }.launchIn(viewModelScope)
     }
 }

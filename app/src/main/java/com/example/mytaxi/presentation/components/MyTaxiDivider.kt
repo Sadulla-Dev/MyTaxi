@@ -10,20 +10,16 @@ import com.example.mytaxi.presentation.theme.MyTaxiTheme
 import com.example.mytaxi.presentation.theme.ThemedPreview
 
 @Composable
-fun MyTaxiDivider(
-    isVisible: Boolean,
-) {
-    if (isVisible) {
-        HorizontalDivider(
-            modifier = Modifier.padding(horizontal = 16.dp),
-            color = MyTaxiColors.divider,
-            thickness = 1.dp
-        )
-    }
+fun MyTaxiDivider() {
+    HorizontalDivider(
+        modifier = Modifier.padding(horizontal = 16.dp),
+        color = MyTaxiColors.divider,
+        thickness = 1.dp
+    )
 }
 
 @ThemedPreview
 @Composable
 private fun MyTaxiDividerPreview() = MyTaxiTheme {
-    MyTaxiDivider(true)
+    MyTaxiDivider()
 }

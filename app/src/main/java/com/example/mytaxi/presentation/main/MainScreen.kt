@@ -47,12 +47,11 @@ fun MainScreen(
 
     val bottomSheetProgress = remember {
         derivedStateOf {
-            val fraction = when (bottomSheetState.bottomSheetState.targetValue) {
+            when (bottomSheetState.bottomSheetState.targetValue) {
                 SheetValue.PartiallyExpanded -> 0f
                 SheetValue.Expanded -> 1f
                 else -> 0f
             }
-            fraction
         }
     }
 

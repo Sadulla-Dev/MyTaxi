@@ -43,7 +43,8 @@ fun BottomSheetContent() {
                 .fillMaxWidth()
                 .clip(
                     RoundedCornerShape(
-                        topStart = MyTaxiCornerRadius.huge, topEnd = MyTaxiCornerRadius.huge
+                        topStart = MyTaxiCornerRadius.huge,
+                        topEnd = MyTaxiCornerRadius.huge
                     )
                 )
                 .background(MyTaxiColors.onBackground)
@@ -57,7 +58,9 @@ fun BottomSheetContent() {
                     key = { _, item -> item.title },
                 ) { index, item ->
                     BottomSheetContentItem(item)
-                    MyTaxiDivider(isVisible = index < bottomSheetItems.lastIndex)
+                    if (index < bottomSheetItems.lastIndex) {
+                        MyTaxiDivider()
+                    }
                 }
             }
         }

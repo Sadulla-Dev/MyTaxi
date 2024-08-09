@@ -5,8 +5,8 @@ import com.mapbox.maps.MapView
 import com.mapbox.maps.plugin.animation.MapAnimationOptions
 import com.mapbox.maps.plugin.animation.flyTo
 
-fun MapView?.zoomIn() {
-    this?.getMapboxMap()?.flyTo(
+fun MapView.zoomIn() {
+    this.getMapboxMap().flyTo(
         CameraOptions.Builder()
             .zoom(this.getMapboxMap().cameraState.zoom + 0.5)
             .build(),
@@ -16,8 +16,8 @@ fun MapView?.zoomIn() {
     )
 }
 
-fun MapView?.zoomOut() {
-    this?.getMapboxMap()?.flyTo(
+fun MapView.zoomOut() {
+    this.getMapboxMap().flyTo(
         CameraOptions.Builder()
             .zoom(this.getMapboxMap().cameraState.zoom - 0.5)
             .build(),

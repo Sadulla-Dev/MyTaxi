@@ -17,28 +17,33 @@ fun addMarkerToMap(
     pointAnnotationManager: PointAnnotationManager?,
 ) {
     pointAnnotationManager?.let { manager ->
-        val bitmap = ResourcesCompat.getDrawable(context.resources, R.drawable.ic_marker, null)
+        val bitmap = ResourcesCompat
+            .getDrawable(context.resources, R.drawable.ic_marker, null)
             ?.let { drawable ->
                 if (drawable is BitmapDrawable) {
                     drawable.bitmap
                 } else {
-                    val bitmap = Bitmap.createBitmap(
+                    Bitmap.createBitmap(
                         drawable.intrinsicWidth,
                         drawable.intrinsicHeight,
                         Bitmap.Config.ARGB_8888
-                    )
-                    val canvas = Canvas(bitmap)
-                    drawable.setBounds(0, 0, canvas.width, canvas.height)
-                    drawable.draw(canvas)
-                    bitmap
+                    ).also {
+                        val canvas = Canvas(it)
+                        drawable.setBounds(0, 0, canvas.width, canvas.height)
+                        drawable.draw(canvas)
+                    }
                 }
             }
 
-        val resizedBitmap = bitmap?.let { Bitmap.createScaledBitmap(it, 150, 150, false) }
+        val resizedBitmap = bitmap?.let {
+            Bitmap.createScaledBitmap(it, 150, 150, false)
+        }
 
         val pointAnnotationOptions: PointAnnotationOptions? = resizedBitmap?.let {
             PointAnnotationOptions()
-                .withPoint(Point.fromLngLat(location.longitude, location.latitude))
+                .withPoint(
+                    Point.fromLngLat(location.longitude, location.latitude)
+                )
                 .withIconImage(it)
         }
 
