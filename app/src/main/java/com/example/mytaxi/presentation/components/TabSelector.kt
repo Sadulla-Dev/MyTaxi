@@ -40,7 +40,7 @@ fun TabSelector(
 
     BoxWithConstraints(
         modifier = modifier
-            .clip(MyTaxiCornerRadius.large)
+            .clip(MyTaxiCornerRadius.extraLarge)
             .height(56.dp)
             .fillMaxSize()
             .background(MyTaxiColors.onBackground)
@@ -93,7 +93,7 @@ fun TabSelector(
         Box(
             modifier = Modifier
                 .offset(x = animatedOffsetX, y = verticalOffset)
-                .clip(MyTaxiCornerRadius.small)
+                .clip(MyTaxiCornerRadius.medium)
                 .width(boxWidth)
                 .height(48.dp)
                 .background(selectedBackgroundColor)

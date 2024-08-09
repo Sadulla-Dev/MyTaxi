@@ -2,6 +2,7 @@ package com.example.mytaxi.presentation.components
 
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -18,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
@@ -30,7 +32,6 @@ import com.example.mytaxi.presentation.theme.MyTaxiCornerRadius
 import com.example.mytaxi.presentation.theme.MyTaxiTheme
 import com.example.mytaxi.presentation.theme.MyTaxiTypography
 import com.example.mytaxi.presentation.theme.ThemedPreview
-import com.example.mytaxi.presentation.utils.applyIf
 
 @Composable
 fun MainIconButton(
@@ -54,40 +55,49 @@ fun MainIconButton(
         label = ""
     )
 
-    Box(modifier = modifier
-        .size(56.dp)
-        .clip(MyTaxiCornerRadius.large)
-        .offset(x = animatedOffset)
-        .background(backgroundColor)
-        .applyIf(
-            condition = onLongPress == null,
-            ifTrue = {
-                Modifier.clickable { onClick() }
-            },
-            ifFalse = {
-                Modifier.pointerInput(Unit) {
-                    detectTapGestures(
-                        onLongPress = {
-                            onLongPress?.invoke()
-                        },
-                        onPress = {
-                            awaitRelease()
-                            onLongPressEnd?.invoke()
-                        },
-                        onTap = {
-                            onClick()
-                        }
-                    )
-                }
-            }
+    val alphaValue by animateFloatAsState(
+        targetValue = if (slideOffset > 0.dp) 0f else 1f,
+        animationSpec = tween(
+            durationMillis = 600,
+            easing = LinearOutSlowInEasing
         ),
+        label = ""
+    )
+
+    Box(
+        modifier = modifier
+            .size(56.dp)
+            .alpha(alphaValue)
+            .clip(MyTaxiCornerRadius.extraLarge)
+            .offset(x = animatedOffset)
+            .background(backgroundColor)
+            .let {
+                if (onLongPress == null) {
+                    it.clickable { onClick() }
+                } else {
+                    it.pointerInput(Unit) {
+                        detectTapGestures(
+                            onLongPress = {
+                                onLongPress.invoke()
+                            },
+                            onPress = {
+                                awaitRelease()
+                                onLongPressEnd?.invoke()
+                            },
+                            onTap = {
+                                onClick()
+                            }
+                        )
+                    }
+                }
+            },
         contentAlignment = Alignment.Center
     ) {
         Box(
             modifier = Modifier
                 .padding(4.dp)
                 .fillMaxSize()
-                .clip(MyTaxiCornerRadius.small)
+                .clip(MyTaxiCornerRadius.medium)
                 .background(innerBackgroundColor), contentAlignment = Alignment.Center
         ) {
             if (icon != null) {
@@ -108,6 +118,7 @@ fun MainIconButton(
         }
     }
 }
+
 
 @ThemedPreview
 @Composable

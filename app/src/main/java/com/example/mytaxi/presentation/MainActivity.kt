@@ -24,7 +24,8 @@ class MainActivity : ComponentActivity() {
             MyTaxiTheme {
                 MainScreen(
                     currentLocation = state.currentLocation,
-                    getLocation = { viewModel.reduce(MainScreenEvents.GetCurrentLocation) }
+                    getLocation = { viewModel.reduce(MainScreenEvents.GetCurrentLocation) },
+                    isLoading = state.isLoading
                 )
             }
         }

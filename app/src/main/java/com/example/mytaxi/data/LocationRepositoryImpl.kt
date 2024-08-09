@@ -1,5 +1,6 @@
 package com.example.mytaxi.data
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Looper
 import com.example.mytaxi.data.dao.LocationDao
@@ -28,6 +29,7 @@ class LocationRepositoryImpl @Inject constructor(
     private val fusedLocationClient: FusedLocationProviderClient =
         LocationServices.getFusedLocationProviderClient(context)
 
+    @SuppressLint("MissingPermission")
     override fun getCurrentLocation(): Flow<LatLng> = callbackFlow {
         val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 5000)
             .setMinUpdateIntervalMillis(10000)

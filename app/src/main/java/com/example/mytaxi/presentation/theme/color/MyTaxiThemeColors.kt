@@ -18,6 +18,7 @@ class MyTaxiThemeColors(
     iconPrimary: Color,
     iconAccent: Color,
     tabSelected: Color,
+    divider: Color,
 ) {
     var background by mutableStateOf(background)
         private set
@@ -49,6 +50,9 @@ class MyTaxiThemeColors(
     var textSecondary by mutableStateOf(textSecondary)
         private set
 
+    var divider by mutableStateOf(divider)
+        private set
+
     fun copy(
         background: Color = this.background,
         onBackground: Color = this.onBackground,
@@ -60,6 +64,7 @@ class MyTaxiThemeColors(
         textPrimary: Color = this.textPrimary,
         iconAccent: Color = this.iconAccent,
         textSecondary: Color = this.textSecondary,
+        divider: Color = this.divider,
     ) = MyTaxiThemeColors(
         background = background,
         onBackground = onBackground,
@@ -71,6 +76,7 @@ class MyTaxiThemeColors(
         textPrimary = textPrimary,
         iconAccent = iconAccent,
         textSecondary = textSecondary,
+        divider = divider,
     )
 
     fun updateColorsFrom(other: MyTaxiThemeColors) {
@@ -84,5 +90,6 @@ class MyTaxiThemeColors(
         textPrimary = other.textPrimary
         iconAccent = other.iconAccent
         textSecondary = other.textSecondary
+        divider = other.divider
     }
 }

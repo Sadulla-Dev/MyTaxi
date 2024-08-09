@@ -10,7 +10,7 @@ import androidx.compose.runtime.remember
 import com.example.mytaxi.presentation.theme.color.MyTaxiThemeColors
 import com.example.mytaxi.presentation.theme.color.darkColors
 import com.example.mytaxi.presentation.theme.color.lightColors
-import com.example.mytaxi.presentation.theme.dimension.MyTaxiThemeCornerRadius
+import com.example.mytaxi.presentation.theme.corners.MyTaxiThemeCornerRadius
 import com.example.mytaxi.presentation.theme.typography.MyTaxiThemeTypography
 
 val MyTaxiColors
